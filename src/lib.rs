@@ -406,16 +406,11 @@ impl DedicatedExecutor {
     }
 }
 
-#[cfg(unix)]
 fn set_current_thread_priority(prio: i32) {
     // on linux setpriority sets the current thread's priority
     // (as opposed to the current process).
+    #[cfg(unix)]
     unsafe { libc::setpriority(0, 0, prio) };
-}
-
-#[cfg(not(unix))]
-fn set_current_thread_priority(prio: i32) {
-    warn!("Setting worker thread priority not supported on this platform");
 }
 
 #[cfg(test)]
